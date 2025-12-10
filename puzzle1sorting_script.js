@@ -157,6 +157,7 @@ function formatSolution(solutionSequence) {
 
 async function solveWithAI() {
     try {
+        initialScramble = structuredClone(currentLabels);
         const prompt = getAIPrompt();
         const response = await fetchGPT(prompt);
         const solution = JSON.parse(response);
