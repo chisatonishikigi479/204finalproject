@@ -60,18 +60,16 @@ body {
     grid-row: 1 / 3;
 }*/
 
+
 #puzzle-main-content {
     display: grid;
-    grid-template-rows: 55px 1fr; /* Use 1fr instead of calc(100% - 55px) */
+    grid-template-rows: 55px 1fr; 
     grid-template-columns: 2fr 3fr;
     gap: 20px;
-    align-items: stretch; /* Change from 'start' to 'stretch' */
+    align-items: stretch; 
     border: 2px dotted;
     border-radius: 7px;
     padding: 9px;
-    /* Remove or comment out any fixed height if present */
-    /* height: 20rem; */
-    /* Instead, use min-height if needed */
     min-height: 300px;
 }
 
@@ -96,7 +94,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* This makes it stretch to fill the grid cell */
     height: 100%;
 }
 
