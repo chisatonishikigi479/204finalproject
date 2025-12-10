@@ -24,7 +24,7 @@ const solvedMessage = document.getElementById("solved-message");
 const GEMINI_API_KEY = 'AIzaSyB4jJjZ3U89Aohq1tsuPhCA61tfE_eBDps';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
 
-const CHATGPT_API_KEY = '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';
+const CHATGPT_API_KEY = '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';
 const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 let completed = false;
