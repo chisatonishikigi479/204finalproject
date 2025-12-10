@@ -24,8 +24,9 @@ const solvedMessage = document.getElementById("solved-message");
 const GEMINI_API_KEY = 'AIzaSyB4jJjZ3U89Aohq1tsuPhCA61tfE_eBDps';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
 
-const CHATGPT_API_KEY = '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';
 const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
+
+const solveWithAIButton = document.getElementById("solve-button");
 
 let completed = false;
 
@@ -230,7 +231,7 @@ function rightShift(arr) {
 document.addEventListener("DOMContentLoaded", async () => {
     renderPuzzle();
     //test the GPT AI
-    fetchGPT("Say hello world in a silly JSON format");
+    //fetchGPT("Say hello world in a silly JSON format");
 
     //more testing
     const solution = await solveWithAI();
@@ -250,7 +251,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         
     });
 
+    solveButton.addEventListener("click", async () => {
 
+
+    });
+    
     permLengthInput.addEventListener("input", (event) => {
         const inputValue = event.target.value;
         windowSizeInput.max = parseInt(inputValue)-1;
