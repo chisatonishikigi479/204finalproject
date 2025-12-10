@@ -91,7 +91,12 @@ function formatSolution(solutionSequence) {
         const direction = move.charAt(0);
         const knobIndex = parseInt(move.substring(1));
         const directionText = direction === 'L' ? 'left' : 'right';
-        return `Step ${index + 1}: Turn Knob ${knobIndex} to the ${directionText} once.`;
+        if (index != moveIndex + 1) {
+            return `Step ${index + 1}: Turn Knob ${knobIndex} to the ${directionText} once.`;
+        }
+        else {
+            return `<b>Step ${index + 1}: Turn Knob ${knobIndex} to the ${directionText} once.</b>`;
+        }
     });
     return 'Solution: <br>' + steps.join('<br>');
 }
@@ -261,6 +266,9 @@ function displayAiSolution() {
 function UpdateUI() {
     playPreviousMove.disabled = moveIndex < 0;
     playNextMove.disabled = moveIndex >= aiSolution.length-1;
+
+    const solutionText = formatSolution(aiSolution);
+    aiSolutionTextDisplay.innerHTML = solutionText;
 }
 
 function showNextMove() {
