@@ -89,11 +89,12 @@ function renderPuzzle() {
 
 }
 
+
 async function playFullSolution() {
     fullVisualSolutionButton.disabled = true;
     fullVisualSolutionButton.textContent = `Playing Solution (${aiSolution.length} moves)...`;
     
-    currentLabels = initialScramble;
+    currentLabels = structuredClone(initialScramble);
     updateLabels();
     playPreviousMove.disabled = true;
     playNextMove.disabled = true;
@@ -128,7 +129,7 @@ async function playFullSolution() {
     playPreviousMove.disabled = false;
     playNextMove.disabled = false;
     moveIndex = -1;
-    currentLabels = initialScramble;
+    currentLabels = structuredClone(initialScramble);
 
     UpdateUI();
     updateLabels();
@@ -252,7 +253,7 @@ function scramblePuzzle() {
         }
     }
 
-    initialScramble = currentLabels;
+    initialScramble = structuredClone(currentLabels);
 
     updateLabels();
 }
