@@ -127,6 +127,8 @@ async function playFullSolution() {
     playPreviousMove.disabled = false;
     playNextMove.disabled = false;
     moveIndex = -1;
+    currentLabels = initialScramble;
+
     UpdateUI();
 
 }
