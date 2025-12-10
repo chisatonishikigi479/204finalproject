@@ -105,7 +105,7 @@ async function fetchGPT(prompt) {
                 'Authorization': `Bearer ${CHATGPT_API_KEY}`
             },
             body: JSON.stringify({
-                model: "gpt-4o", 
+                model: "gpt-5", 
                 messages: [
                     {
                         role: "user",
