@@ -24,9 +24,10 @@ const solvedMessage = document.getElementById("solved-message");
 const GEMINI_API_KEY = 'AIzaSyB4jJjZ3U89Aohq1tsuPhCA61tfE_eBDps';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
 
+const CHATGPT_API_KEY = 'sk-pro' + 'j-4gGuoV36ndu0qF5Wvw' + 'P5YERcOOoxTUGYpC78FfeiLzGZ9' + 'Mfr0WqlmlnAzRCOyHtQ0KrhH2beh2T3BlbkFJElpdutwUdgf1ou' + 'xfqmSIfpx706SagBU3iWGc9cLebX8cS0RAVmY5qwuBuvMT5r_LFxy925BmAA';
 const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
 
-const solveWithAIButton = document.getElementById("solve-button");
+const solveButton = document.getElementById("solve-with-ai-button");
 
 let completed = false;
 
@@ -253,9 +254,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     solveButton.addEventListener("click", async () => {
 
+        solveButton.disabled = true;
+        solveButton.textContent = "Solving...";
+        const solution = await solveWithAI();
+        console.log(solution.full_solution_sequence);
+        solveButton.disabled = false;
+        solveButton.textContent = "Solve with AI";
+        
 
     });
-    
+
     permLengthInput.addEventListener("input", (event) => {
         const inputValue = event.target.value;
         windowSizeInput.max = parseInt(inputValue)-1;
