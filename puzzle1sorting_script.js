@@ -27,9 +27,14 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemi
 const CHATGPT_API_KEY = 'sk-pro' + 'j-4gGuoV36ndu0qF5Wvw' + 'P5YERcOOoxTUGYpC78FfeiLzGZ9' + 'Mfr0WqlmlnAzRCOyHtQ0KrhH2beh2T3BlbkFJElpdutwUdgf1ou' + 'xfqmSIfpx706SagBU3iWGc9cLebX8cS0RAVmY5qwuBuvMT5r_LFxy925BmAA';
 const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
 
-
+const aiSolutionContainer = document.getElementById("ai-solution-container");
+let aiSolution = null;
+let currMoveIndex = -1;
 let completed = false;
-
+const aiSolutionTextDisplay = document.getElementById("move-sequence-text");
+const playPreviousMove = document.getElementById("play-previous-move");
+const playNextMove = document.getElementById("play-next-move");
+const fullVisualSolutionButton = document.getElementById("full-visual-solution");
 
 function renderPuzzle() {
     solvedMessage.hidden = true;
@@ -74,8 +79,21 @@ function renderPuzzle() {
 
     scramblePuzzle();
 
+    currMoveIndex = -1;
+    aiSolution = null;
+    aiSolutionContainer.hidden = true;
     
 
+}
+
+function formatSolution(solutionSequence) {
+    const steps = solutionSequence.map((move, index) => {
+        const direction = move.charAt(0);
+        const knobIndex = parseInt(move.substring(1));
+        const directionText = direction === 'L' ? 'left' : 'right';
+        return `Step ${index + 1}: Turn Knob ${knobIndex} to the ${directionText} once.`;
+    });
+    return 'Solution: <br>' + steps.join('<br>');
 }
 
 async function solveWithAI() {
@@ -83,6 +101,10 @@ async function solveWithAI() {
         const prompt = getAIPrompt();
         const response = await fetchGPT(prompt);
         const solution = JSON.parse(response);
+        if (solution && solution.full_solution_sequence) {
+            aiSolution = solution.full_solution_sequence;
+            currMoveIndex = -1;
+        }
         return solution;
     } catch (error) {
         console.error('AI Solver error:', error);
@@ -227,6 +249,13 @@ function rightShift(arr) {
     }
 }
 
+function displayAiSolution() {
+    aiSolutionContainer.hidden = false;
+    const solutionText = formatSolution(aiSolution);
+    aiSolutionTextDisplay.innerHTML = solutionText;
+
+
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
     renderPuzzle();
@@ -238,7 +267,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     //console.log("AI Solution:", solution);
 
     const solveButton = document.getElementById("solve-with-ai-button");
-    
 
     customizationForm.addEventListener("submit", async(event) => {
         event.preventDefault();
@@ -247,16 +275,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         customLabel = customLabelInput.value;
 
         renderPuzzle();
-
-     
         
     });
     solveButton.addEventListener("click", async () => {
-        
+
         solveButton.disabled = true;
         solveButton.textContent = "Solving...";
         const solution = await solveWithAI();
         console.log(solution.full_solution_sequence);
+        displayAiSolution();
         solveButton.disabled = false;
         solveButton.textContent = "Solve with AI";
 
@@ -274,7 +301,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     scrambleButton.addEventListener("click", async() => {
 
-        renderPuzzle();
+        renderPuzzle(); 
 
         
     });
