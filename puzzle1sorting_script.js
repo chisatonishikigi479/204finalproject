@@ -73,33 +73,28 @@ function renderPuzzle() {
 
 }
 
-function getGeminiPrompt() {
-    
-    `Output MIME type: application/json
-    
-    You have a puzzle with initial state sigma_0 (a permutation of {1, 2, ..., n}, or an initial_word of length n letters.).
+function getAIPrompt() {
 
+    return `You have a puzzle with initial state sigma_0 (a permutation of {1, 2, ..., n}, or an initial_word of length n letters.).
     Rules:
     - There are n-k+1 knobs (positions 1 to n-k+1)
     - Knob i operates on k consecutive elements starting at position i
     - Li = left cyclic shift of these k elements
     - Ri = right cyclic shift of these k elements
-
     Goal: Transform sigma_0 into the sorted sequence [1, 2, 3, ..., n]
-
-    Required output format:
-    \`\`\`json
+    Required output format (output only this JSON object and NOTHING ELSE PLEASE):
+    \\json
     {
         "num_moves_to_solution": <integer>,
-    "move_sequence": [<moves>]
+        "move_sequence": [<moves>]
     }
-    \`\`\`
-
+    \\
     Where each move is a string like "L1", "R2", etc.
-
     Return only the JSON object above, nothing else.
+    DO NOT OUTPUT ANY EXPLANATIONS OR ANY OF YOUR THINKING, OUTPUT THE SOLUTION IN THE JSON FORMAT PRESENTED ABOVE ONLY.
+    Given: n=${n}, k=${k}, sigma_0=${JSON.stringify(currentLabels)}, initial_word=${JSON.stringify(groundTruthLabels)}`;                     
+    
 
-    Given: n=${n}, k=${k}, sigma_0=${JSON.stringify(currentLabels)}, initial_word=${JSON.stringify(groundTruthLabels)}`
 }
 
 function applyKnob (index, orientation) {
