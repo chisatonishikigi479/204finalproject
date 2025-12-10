@@ -29,7 +29,7 @@ const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const aiSolutionContainer = document.getElementById("ai-solution-container");
 let aiSolution = null;
-let currMoveIndex = -1;
+let moveIndex = -1;
 let completed = false;
 const aiSolutionTextDisplay = document.getElementById("move-sequence-text");
 const playPreviousMove = document.getElementById("play-previous-move");
@@ -79,7 +79,7 @@ function renderPuzzle() {
 
     scramblePuzzle();
 
-    currMoveIndex = -1;
+    moveIndex = -1;
     aiSolution = null;
     aiSolutionContainer.hidden = true;
     
@@ -103,7 +103,7 @@ async function solveWithAI() {
         const solution = JSON.parse(response);
         if (solution && solution.full_solution_sequence) {
             aiSolution = solution.full_solution_sequence;
-            currMoveIndex = -1;
+            moveIndex = -1;
         }
         return solution;
     } catch (error) {
@@ -254,7 +254,39 @@ function displayAiSolution() {
     const solutionText = formatSolution(aiSolution);
     aiSolutionTextDisplay.innerHTML = solutionText;
 
+    UpdateUI();
 
+}
+
+function UpdateUI() {
+    playPreviousMove.disabled = moveIndex < 0;
+    playNextMove.disabled = moveIndex >= aiSolution.length-1;
+}
+
+function showNextMove() {
+    moveIndex = moveIndex + 1;
+    const steps = aiSolution.map((move, index) => {
+        const direction = move.charAt(0);
+        const knobIndex = parseInt(move.substring(1));
+        const directionText = direction === 'L' ? 'left' : 'right';
+        return {knobIndex: knobIndex, orientation: directionText};
+    });
+    applyKnob(steps[moveIndex].knobIndex, steps[moveIndex].orientation);
+    UpdateUI();
+
+}
+
+function undoPreviousMove() {
+    moveIndex = moveIndex - 1;
+    const steps = aiSolution.map((move, index) => {
+        const direction = move.charAt(0);
+        const knobIndex = parseInt(move.substring(1));
+        const directionText = direction === 'L' ? 'left' : 'right';
+        return {knobIndex: knobIndex, orientation: directionText};
+    });
+
+    applyKnob(steps[moveIndex-1].knobIndex, steps[moveIndex-1].orientation === 'right' ? 'left' : 'right');
+    UpdateUI();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -288,6 +320,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         solveButton.textContent = "Solve with AI";
 
     });
+
+    playPreviousMove.addEventListener("click", () => {
+        undoPreviousMove();
+    });
+
+    playNextMove.addEventListener("click", () => {
+        showNextMove();
+    }); 
 
     permLengthInput.addEventListener("input", (event) => {
         const inputValue = event.target.value;
