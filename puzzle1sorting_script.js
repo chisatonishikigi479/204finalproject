@@ -39,6 +39,7 @@ const fullVisualSolutionButton = document.getElementById("full-visual-solution")
 
 const solutionWalkthroughDelay = 750; //in ms
 const buttonEffectResetDelay = 500;
+const showSolutionForDelay = 1250;
 function renderPuzzle() {
     solvedMessage.hidden = true;
     completed = false;
@@ -129,6 +130,8 @@ async function playFullSolution() {
     playPreviousMove.disabled = false;
     playNextMove.disabled = false;
     moveIndex = -1;
+
+    await new Promise (resolve => setTimeout(resolve, showSolutionForDelay));
     currentLabels = structuredClone(initialScramble);
 
     UpdateUI();
