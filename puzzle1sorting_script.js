@@ -127,11 +127,12 @@ async function playFullSolution() {
     fullVisualSolutionButton.disabled = false;
     fullVisualSolutionButton.textContent = "Play full step-by-step solution";
 
+    
+
+    await new Promise (resolve => setTimeout(resolve, showSolutionForDelay));
     playPreviousMove.disabled = false;
     playNextMove.disabled = false;
     moveIndex = -1;
-
-    await new Promise (resolve => setTimeout(resolve, showSolutionForDelay));
     currentLabels = structuredClone(initialScramble);
     completed = false;
     UpdateUI();
