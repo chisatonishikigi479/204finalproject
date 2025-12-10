@@ -3,6 +3,7 @@ let n = 5;
 let k = 3; //default values
 let customLabel = ""; //if empty generate default number labels
 let groundTruthLabels = [];
+let initialScramble = [];
 let currentLabels = []; //will update based on knob turning
 
 const customLabelInput = document.getElementById("custom-label-input");
@@ -92,11 +93,11 @@ async function playFullSolution() {
     fullVisualSolutionButton.disabled = true;
     fullVisualSolutionButton.textContent = `Playing Solution (${aiSolution.length} moves)...`;
     
-    currentLabels = groundTruthLabels;
+    currentLabels = initialScramble;
     playPreviousMove.disabled = true;
     playNextMove.disabled = true;
-
     moveIndex = -1;
+
     UpdateUI();
     
     for (let i = 0; i < aiSolution.length; i++) {
@@ -246,6 +247,8 @@ function scramblePuzzle() {
             currentLabels[currIndex - 1 + j] = shuffleWindow[j];
         }
     }
+
+    initialScramble = currentLabels;
 
     updateLabels();
 }
