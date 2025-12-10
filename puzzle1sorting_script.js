@@ -37,7 +37,7 @@ const playNextMove = document.getElementById("play-next-move");
 const fullVisualSolutionButton = document.getElementById("full-visual-solution");
 
 const solutionWalkthroughDelay = 750; //in ms
-const buttonEffectResetDelay = 250;
+const buttonEffectResetDelay = 500;
 function renderPuzzle() {
     solvedMessage.hidden = true;
     completed = false;
