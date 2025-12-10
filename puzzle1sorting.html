@@ -15,35 +15,37 @@
         <div id="number-moves">0</div>
     </h4>
 
-
-    <div id="knobs" hidden>
-    <!--JS injects knobs here-->
-    </div>
-    <h2>Current Permutation: </h2>
-    <div id="permutation-display"><h3></h3></div>
-
-    <div id="solved-message" hidden>(Solved!)</div>
-
-
-    <button id="scramble-button">New Scramble</button>
-
-    <button id="solve-with-ai-button" class="btn btn-primary">Solve with AI</button>
-
-    <div id="ai-solution-container" hidden>
-        <div id="move-navigation-container">
-            <p id="move-sequence-text"><!--inject move sequence into here--></p>
-            <div id="move-navigation-button-container">
-                <button id="play-previous-move">
-                    Go back one move
-                </button>
-                <button id="play-next-move">
-                    Play next move
-                </button>
-            </div>
+    <div id="puzzle-main-content">
+        <div id="knobs" hidden>
+        <!--JS injects knobs here-->
         </div>
-        <button id="full-visual-solution">
-            Play full step-by-step solution
-        </button>
+        <h2>Current Permutation: </h2>
+        <div id="permutation-display"><h3></h3></div>
+
+        <div id="solved-message" hidden>(Solved!)</div>
+    </div>
+
+    <div id="puzzle-controls">
+        <button id="scramble-button">New Scramble</button>
+
+        <button id="solve-with-ai-button" class="btn btn-primary">Solve with AI</button>
+
+        <div id="ai-solution-container" hidden>
+            <div id="move-navigation-container">
+                <p id="move-sequence-text"><!--inject move sequence into here--></p>
+                <div id="move-navigation-button-container">
+                    <button id="play-previous-move">
+                        Go back one move
+                    </button>
+                    <button id="play-next-move">
+                        Play next move
+                    </button>
+                </div>
+            </div>
+            <button id="full-visual-solution">
+                Play full step-by-step solution
+            </button>
+        </div>
     </div>
 
 </div>
