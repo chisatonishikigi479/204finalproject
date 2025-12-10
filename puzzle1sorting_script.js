@@ -36,6 +36,8 @@ const playPreviousMove = document.getElementById("play-previous-move");
 const playNextMove = document.getElementById("play-next-move");
 const fullVisualSolutionButton = document.getElementById("full-visual-solution");
 
+const solutionWalkthroughDelay = 750; //in ms
+const buttonEffectResetDelay = 250;
 function renderPuzzle() {
     solvedMessage.hidden = true;
     completed = false;
@@ -83,6 +85,46 @@ function renderPuzzle() {
     aiSolution = null;
     aiSolutionContainer.hidden = true;
     
+
+}
+
+async function playFullSolution() {
+    fullVisualSolutionButton.disabled = true;
+    fullVisualSolutionButton.textContent = `Playing Solution (${aiSolution.length} moves)...`;
+    
+    playPreviousMove.disabled = true;
+    playNextMove.disabled = true;
+
+    moveIndex = -1;
+    UpdateUI();
+    
+    for (let i = 0; i < aiSolution.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, solutionWalkthroughDelay)); // 800ms delay between moves
+        const move = aiSolution[i];
+        const orientation = move.charAt(0);
+        const knobIndex = parseInt(move.substring(1));
+        const button = document.getElementById(`knob-${knobIndex}-${orientation === 'L' ? 'left' : 'right'}`);
+        
+        if (button) {
+            button.style.backgroundColor = '#31e5e8ff';
+            button.style.transform = 'scale(1.1)';
+        }
+        
+        showNextMove();
+        
+        if (button) {
+            setTimeout(() => {
+                button.style.backgroundColor = '';
+                button.style.transform = '';
+            }, buttonEffectResetDelay);
+        }
+    }
+    fullVisualSolutionButton.disabled = false;
+    fullVisualSolutionButton.textContent = "Play full step-by-step solution";
+
+    playPreviousMove.disabled = false;
+    playNextMove.disabled = false;
+    UpdateUI();
 
 }
 
@@ -316,6 +358,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         renderPuzzle();
         
+    });
+    fullVisualSolutionButton.addEventListener("click", async() => {
+        playFullSolution();
     });
     solveButton.addEventListener("click", async () => {
 
