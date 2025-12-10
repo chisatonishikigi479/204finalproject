@@ -94,6 +94,7 @@ async function playFullSolution() {
     fullVisualSolutionButton.textContent = `Playing Solution (${aiSolution.length} moves)...`;
     
     currentLabels = initialScramble;
+    updateLabels();
     playPreviousMove.disabled = true;
     playNextMove.disabled = true;
     moveIndex = -1;
@@ -130,6 +131,7 @@ async function playFullSolution() {
     currentLabels = initialScramble;
 
     UpdateUI();
+    updateLabels();
 
 }
 
