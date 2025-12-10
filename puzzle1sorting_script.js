@@ -73,6 +73,20 @@ function renderPuzzle() {
 
     scramblePuzzle();
 
+    
+
+}
+
+async function solveWithAI() {
+    try {
+        const prompt = getAIPrompt();
+        const response = await fetchGPT(prompt);
+        const solution = JSON.parse(response);
+        return solution;
+    } catch (error) {
+        console.error('AI Solver error:', error);
+        return null;
+    }
 }
 
 function getAIPrompt() {
@@ -81,27 +95,39 @@ function getAIPrompt() {
     
 }
 
+
 async function fetchGPT(prompt) {
-    const response = await fetch(CHATGPT_API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${CHATGPT_API_KEY}`
-        },
-        body: JSON.stringify({
-            model: "gpt-4o", 
-            messages: [
-                {
-                    role: "user",
-                    content: prompt
-                }
-            ],
-            response_format: { type: "json_object" }
-        })
-    });
-    const data = await response.json();
-    return data.choices[0].message.content;
+    try {
+        const response = await fetch(CHATGPT_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${CHATGPT_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4o", 
+                messages: [
+                    {
+                        role: "user",
+                        content: prompt
+                    }
+                ],
+                response_format: { type: "json_object" }
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log("ChatGPT response:", data.choices[0].message.content);
+        return data.choices[0].message.content;
+    } catch (error) {
+        console.error('ChatGPT API error:', error);
+        throw error;
+    }
 }
+
 
 function applyKnob (index, orientation) {
     const currIndex = index;
@@ -201,17 +227,26 @@ function rightShift(arr) {
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     renderPuzzle();
+    //test the GPT AI
+    fetchGPT("Say hello world in a silly JSON format");
 
+    //more testing
+    const solution = await solveWithAI();
+    console.log("AI Solution:", solution);
+    
 
-    customizationForm.addEventListener("submit", (event) => {
+    customizationForm.addEventListener("submit", async(event) => {
         event.preventDefault();
         n = parseInt(permLengthInput.value);
         k = parseInt(windowSizeInput.value);
         customLabel = customLabelInput.value;
 
         renderPuzzle();
+
+        const solution = await solveWithAI();
+        console.log("AI Solution:", solution);
         
     });
 
@@ -226,9 +261,12 @@ document.addEventListener("DOMContentLoaded", () => {
         customizationForm.reset();
     });
 
-    scrambleButton.addEventListener("click", () => {
+    scrambleButton.addEventListener("click", async() => {
 
         renderPuzzle();
+
+        const solution = await solveWithAI();
+        console.log("AI Solution:", solution);
     });
     
 })
