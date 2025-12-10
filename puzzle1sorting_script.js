@@ -27,7 +27,6 @@ const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemi
 const CHATGPT_API_KEY = 'sk-pro' + 'j-4gGuoV36ndu0qF5Wvw' + 'P5YERcOOoxTUGYpC78FfeiLzGZ9' + 'Mfr0WqlmlnAzRCOyHtQ0KrhH2beh2T3BlbkFJElpdutwUdgf1ou' + 'xfqmSIfpx706SagBU3iWGc9cLebX8cS0RAVmY5qwuBuvMT5r_LFxy925BmAA';
 const CHATGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
 
-const solveButton = document.getElementById("solve-with-ai-button");
 
 let completed = false;
 
@@ -235,8 +234,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     //fetchGPT("Say hello world in a silly JSON format");
 
     //more testing
-    const solution = await solveWithAI();
-    console.log("AI Solution:", solution);
+    //const solution = await solveWithAI();
+    //console.log("AI Solution:", solution);
+
+    const solveButton = document.getElementById("solve-with-ai-button");
     
 
     customizationForm.addEventListener("submit", async(event) => {
@@ -247,20 +248,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         renderPuzzle();
 
-        const solution = await solveWithAI();
-        console.log("AI Solution:", solution);
+     
         
     });
-
     solveButton.addEventListener("click", async () => {
-
+        
         solveButton.disabled = true;
         solveButton.textContent = "Solving...";
         const solution = await solveWithAI();
         console.log(solution.full_solution_sequence);
         solveButton.disabled = false;
         solveButton.textContent = "Solve with AI";
-        
 
     });
 
@@ -278,8 +276,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         renderPuzzle();
 
-        const solution = await solveWithAI();
-        console.log("AI Solution:", solution);
+        
     });
     
 })
