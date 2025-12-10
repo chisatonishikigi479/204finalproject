@@ -133,7 +133,7 @@ async function playFullSolution() {
 
     await new Promise (resolve => setTimeout(resolve, showSolutionForDelay));
     currentLabels = structuredClone(initialScramble);
-
+    completed = false;
     UpdateUI();
     updateLabels();
 
