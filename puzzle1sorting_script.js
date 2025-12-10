@@ -5,6 +5,9 @@ let customLabel = ""; //if empty generate default number labels
 let groundTruthLabels = [];
 let initialScramble = [];
 let currentLabels = []; //will update based on knob turning
+let moveHistory = []; //stack of past moves
+let redoStack = []; //stack for redo button
+let isUndoRedoAction = false; //so we don't infinitely add more history during undo/redo
 
 const customLabelInput = document.getElementById("custom-label-input");
 const windowSizeInput = document.getElementById("window-size-input");
@@ -15,6 +18,9 @@ const resetButton = document.getElementById("reset-button");
 const scrambleButton = document.getElementById("scramble-button");
 
 const knobs = document.getElementById("knobs");
+
+const undoButton = document.getElementById('undo-button');
+const redoButton = document.getElementById('redo-button');
 
 const permutationDisplay = document.getElementById("permutation-display");
 const numberMoves = document.getElementById("number-moves");
@@ -86,6 +92,9 @@ function renderPuzzle() {
     moveIndex = -1;
     aiSolution = null;
     aiSolutionContainer.hidden = true;
+    moveHistory = [];
+    redoStack = [];
+    UpdateUI();
     
 
 }
@@ -227,6 +236,13 @@ function applyKnob (index, orientation) {
     }
     numMoves += 1;
     numberMoves.innerHTML = `<h4>${numMoves}</h4>`
+
+     if (!isUndoRedoAction) {
+        moveHistory.push({knobIndex: index, orientation: orientation});
+        redoStack = [];
+        UpdateUI();
+    }
+
     checkCompletion();
     updateLabels();
 }
@@ -241,6 +257,36 @@ function checkCompletion() {
         completed = false;
     }
 }
+
+function undoMove() {
+    if (moveHistory.length === 0) {
+        return;
+    }
+    isUndoRedoAction = true;
+    const lastMove = moveHistory.pop();
+    const oppositeOrientation = lastMove.orientation === 'left' ? 'right' : 'left';
+    applyKnob(lastMove.knobIndex, oppositeOrientation);
+    redoStack.push(lastMove);
+    numMoves -= 2;
+    numberMoves.innerHTML = `<h4>${numMoves}</h4>`;
+    isUndoRedoAction = false;
+    UpdateUI();
+}
+
+function redoMove() {
+    if (redoStack.length === 0) {
+        return;
+    }
+    isUndoRedoAction = true;
+    const moveToRedo = redoStack.pop();
+    applyKnob(moveToRedo.knobIndex, moveToRedo.orientation);
+    moveHistory.push(moveToRedo);
+    numberMoves.innerHTML = `<h4>${numMoves}</h4>`;
+    isUndoRedoAction = false;
+    UpdateUI();
+}
+
+
 
 function scramblePuzzle() {
     const numShuffles = 50;
@@ -260,6 +306,10 @@ function scramblePuzzle() {
     }
 
     initialScramble = structuredClone(currentLabels);
+
+    moveHistory = [];
+    redoStack = [];
+    UpdateUI();
 
     updateLabels();
 }
@@ -322,11 +372,17 @@ function displayAiSolution() {
 }
 
 function UpdateUI() {
+    if (aiSolution) {
     playPreviousMove.disabled = moveIndex < 0;
     playNextMove.disabled = moveIndex >= aiSolution.length-1;
-
     const solutionText = formatSolution(aiSolution);
     aiSolutionTextDisplay.innerHTML = solutionText;
+    }
+    
+    
+    undoButton.disabled = moveHistory.length === 0;
+    redoButton.disabled = redoStack.length === 0;
+    
 }
 
 function showNextMove() {
@@ -403,6 +459,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         windowSizeInput.max = parseInt(inputValue)-1;
     });
     
+    undoButton.addEventListener("click", () => {
+        undoMove();
+    });
+    
+    redoButton.addEventListener("click", () => {
+        redoMove();
+    });
 
     resetButton.addEventListener("click", () => {
         customizationForm.reset();
