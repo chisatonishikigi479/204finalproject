@@ -10,26 +10,36 @@
 
 <div id="puzzle-display">
 
-
-    <h4>Number of moves so far: 
-        <div id="number-moves">0</div>
-    </h4>
-
     <div id="puzzle-main-content">
+        <div id="number-moves-container">
+            <h4>Number of moves so far: 
+            <div id="number-moves">0</div>
+            </h4>
+        </div>
+
+        <div id="current-permutation-container">
+            <h2>Current Permutation: </h2>
+            <div id="permutation-display"><h3></h3></div>
+            <div id="solved-message" hidden>(Solved!)</div>
+        </div>
+
+        <div id="knob-container">
+        <h5>Your goal: rearrange the permutation to the correct order using the knobs!</h5>
         <div id="knobs" hidden>
+
         <!--JS injects knobs here-->
         </div>
-        <h2>Current Permutation: </h2>
-        <div id="permutation-display"><h3></h3></div>
+        </div>
 
-        <div id="solved-message" hidden>(Solved!)</div>
+        
     </div>
 
     <div id="puzzle-controls">
+        <div id="puzzle-control-buttons">
         <button id="scramble-button">New Scramble</button>
 
         <button id="solve-with-ai-button" class="btn btn-primary">Solve with AI</button>
-
+        </div>
         <div id="ai-solution-container" hidden>
             <div id="move-navigation-container">
                 <p id="move-sequence-text"><!--inject move sequence into here--></p>
@@ -50,6 +60,7 @@
 
 </div>
 
+<div id="customization-container">
 <form id="customization">
     <h2>Customize Your Puzzle: </h2>
     <div class="customization-input">
@@ -69,7 +80,7 @@
         <button type="reset" class="btn btn-ghost" id="reset-button">Clear form</button>
     </div>
 </form>
-
+</div>
 
 
 

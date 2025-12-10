@@ -39,7 +39,7 @@ const fullVisualSolutionButton = document.getElementById("full-visual-solution")
 
 const solutionWalkthroughDelay = 750; //in ms
 const buttonEffectResetDelay = 500;
-const showSolutionForDelay = 1250;
+const showSolutionForDelay = 3125;
 function renderPuzzle() {
     solvedMessage.hidden = true;
     completed = false;
@@ -124,12 +124,13 @@ async function playFullSolution() {
             }, buttonEffectResetDelay);
         }
     }
-    fullVisualSolutionButton.disabled = false;
-    fullVisualSolutionButton.textContent = "Play full step-by-step solution";
-
+    
     
 
     await new Promise (resolve => setTimeout(resolve, showSolutionForDelay));
+    fullVisualSolutionButton.disabled = false;
+    fullVisualSolutionButton.textContent = "Play full step-by-step solution";
+
     playPreviousMove.disabled = false;
     playNextMove.disabled = false;
     moveIndex = -1;
