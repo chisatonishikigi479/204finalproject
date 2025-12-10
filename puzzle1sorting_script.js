@@ -277,7 +277,6 @@ function showNextMove() {
 }
 
 function undoPreviousMove() {
-    moveIndex = moveIndex - 1;
     const steps = aiSolution.map((move, index) => {
         const direction = move.charAt(0);
         const knobIndex = parseInt(move.substring(1));
@@ -285,7 +284,8 @@ function undoPreviousMove() {
         return {knobIndex: knobIndex, orientation: directionText};
     });
 
-    applyKnob(steps[moveIndex-1].knobIndex, steps[moveIndex-1].orientation === 'right' ? 'left' : 'right');
+    applyKnob(steps[moveIndex].knobIndex, steps[moveIndex].orientation === 'right' ? 'left' : 'right');
+    moveIndex = moveIndex - 1;
     UpdateUI();
 }
 
