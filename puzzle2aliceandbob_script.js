@@ -5,12 +5,14 @@ let userGoesFirst = false;
 let n = 4;
 let k = 3;
 let currentString = []; //array of length n, each element from 0 to k-1 inclusive
-let seenStates = new Set();
 
 const showInstructionsButton = document.getElementById("show-instructions");
 const puzzleIntroduction = document.getElementById("puzzle-introduction");
 const puzzleDisplayContainer = document.getElementById("puzzle-display");
 
+
+const numDimensionsInput = document.getElementById("num-dimensions-input");
+const hypercubeLengthInput = document.getElementById("hypercube-length-input");
 const moveHistoryList = document.getElementById("move-history-list");
 const stringDisplay = document.getElementById("string-display");
 const noLegalMovesMessage = document.getElementById("no-legal-moves-message");
@@ -41,12 +43,111 @@ function renderPuzzle() {
     winnerMessage.hidden = true;
     illegalWarning.hidden = true;
     knobs.hidden = false;
+
+    updateStringDisplay();
+    generateKnobs();
+    updateTurnDisplay();
+    
+    // If AI goes first, make AI move
+    if (!userGoesFirst) {
+        setTimeout(() => {
+            makeAIMove();
+        }, 500);
+    }
     
 
 
 
 }
 
+function updateStringDisplay() {
+    stringDisplay.innerHTML = `<h3>${currentString.join(' ')}</h3>`;
+}
+
+function generateKnobs() {
+
+    const indicesArr = [];
+    for (let i = 1; i <= n; i++) {
+        indicesArr.push(i);
+    }
+
+    knobs.innerHTML = indicesArr.map((index) => {
+        let finalStructure = `<div class="knob-set">
+            <button class="knob" class="decrement" id="knob-${index}-decrement" ${currentString[i-1] <= 0 ? 'disabled' : ''}>
+                -1 to digit ${index}
+            </button>
+            <button class="knob" class="increment" id="knob-${index}-increment" ${currentString[i-1] >= k - 1 ? 'disabled' : ''}>
+                +1 to digit ${index}
+            </button>
+        </div>
+        `;
+        return finalStructure;
+    }).join("");
+
+    indicesArr.forEach((index) => {
+        const decButton = document.getElementById(`knob-${index}-decrement`);
+        const incButton = document.getElementById(`knob-${index}-increment`);
+        decButton.addEventListener("click", () => {
+            applyKnob(index, false);
+        });
+        incButton.addEventListener("click", () => {
+            applyKnob(index, true);
+        });
+    });
+
+    if (!usersTurn) {
+        disableAllKnobs();
+    }
+    
+
+}
+
+function disableAllKnobs() {
+    document.querySelectorAll('.decrement, .increment').forEach(btn => {
+        btn.disabled = true;
+    });
+}
+
+function enableAllKnobs() {
+
+    const indicesArr = [];
+    for (let i = 1; i <= n; i++) {
+        indicesArr.push(i);
+    }
+    indicesArr.forEach((index) => {
+        const decButton = document.getElementById(`knob-${index}-decrement`);
+        const incButton = document.getElementById(`knob-${index}-increment`);
+        decButton.disabled = currentString[index-1] <= 0;
+        incButton.disabled = currentString[index-1] >= k-1; 
+    });
+    
+}
+
+function arraysEqual(a, b) {
+  if (a.length !== b.length) return false; 
+  for (let i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) {
+      return false; 
+    }
+  }
+  return true; 
+}
+
+
+function hasStateBeenSeen(state) //pass in state as an array
+{
+    if (arraysEqual(state, Array(n).fill(0))) {
+        return true;
+    }
+    //check if it's in move history
+    let inMoveHistory = false;
+    for (let i = 0; i < moveHistory.length; i++) {
+        if (arraysEqual(state, moveHistory[i])) {
+            inMoveHistory = true;
+        }
+    }
+    return inMoveHistory;
+}
 
 
 
@@ -130,8 +231,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     puzzleDisplayContainer.classList.add('hidden');
     customizationForm.addEventListener("submit", async(event) => {
         event.preventDefault();
-        n = parseInt(permLengthInput.value);
-        k = parseInt(windowSizeInput.value);
+        n = parseInt(numDimensionsInput.value);
+        k = parseInt(hypercubeLengthInput.value);
         const checkedRadio = document.querySelector('input[name="turn-order"]:checked');
         userGoesFirst = checkedRadio.value === 'first';
         const submitButton = document.getElementById("submit-button");
@@ -142,6 +243,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderPuzzle();
         
     });
+
+    resetGameButton.addEventListener("click", () => {
+    renderPuzzle();
+});
 
     showInstructionsButton.addEventListener("click", async() => {
         showInstructions();
