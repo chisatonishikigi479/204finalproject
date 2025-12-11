@@ -388,11 +388,15 @@ function UpdateUI() {
     playNextMove.disabled = moveIndex >= aiSolution.length-1;
     const solutionText = formatSolution(aiSolution);
     aiSolutionTextDisplay.innerHTML = solutionText;
+    undoButton.disabled = true;
+    redoButton.disabled = true;
     }
     
+    else {
+        undoButton.disabled = moveHistory.length === 0;
+        redoButton.disabled = redoStack.length === 0;
+    }
     
-    undoButton.disabled = moveHistory.length === 0;
-    redoButton.disabled = redoStack.length === 0;
     
 }
 
