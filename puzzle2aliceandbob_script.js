@@ -76,7 +76,7 @@ function updateTurnDisplay() {
         aiMoveStringDisplay.textContent = "AI is thinking...";
         disableAllKnobs();
     }
-    numberMoves.textContent = `<h2>${moveHistory.length}</h2>`;
+    numberMoves.innerHTML = `<h2>${moveHistory.length}</h2>`;
 
 
 }
