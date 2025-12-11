@@ -8,7 +8,44 @@
 </head>
 <body>
 
-<div id="puzzle-display">
+<h2 id="page-title">1D Rubik's Cube</h2>
+
+<button id="show-instructions">Hide Instructions</button>
+
+<div id="puzzle-introduction">
+
+<p>
+
+At the start of puzzle, you are given: 
+<ol>
+    <li><b>n</b>, a customizeable parameter from 4 to 9, inclusive</li>
+    <li><b>k</b>, a customizeable parameter from 3 to n-1, inclusive</li>
+    <li>a <b>random permutation/arrangement</b> of the numbers <b>[1, 2, 3, ..., n]</b></li>
+</ol>
+Let us denote this initial random permutation <b>[a_1, a_2, ..., a_n]</b>.
+
+<br> For instance, if the permutation was [2, 3, 1, 4, 5], then a_1 = 2, a_2 = 3, a_3 = 1, a_4 = 4, and a_5 = 5.
+
+<br> You have a total of <b>n-k+1</b> available knobs, where for each integer value of <b>i</b> in the range <b>1 &lt;= i &lt;= n-k+1</b>, turning <b>Knob i</b> to the <b>left</b> will apply a <b>left</b>-cyclic-shift to the sub-array <b>[a_i, a_{i+1}, ..., a_{i+k-1}]</b>:
+
+<br><b>[a_i, a_{i+1}, ..., a_{i+k-1}] => [a_{i+k-1}, a_i, a_{i-1}, ..., a_{i+k-2}]</b>
+
+<br>On the other hand, turning <b>Knob i</b> to the <b>right</b> will apply a <b>right</b>-cyclic-shift to the sub-array <b>[a_i, a_{i+1}, ..., a_{i+k-1}]</b>:
+
+<br><b>[a_i, a_{i+1}, ..., a_{i+k-1}] => [a_{i+1}, a_{i+2}, ..., a_{i+k-1}, a_i] </b>
+
+<br>By default, your goal is to use these moves available from the <b>n-k+1</b> total knobs to revert the starting permutation back to its correct ordering: <b>[1, 2, 3, 4, ..., n]</b>.
+
+<br>If you'd like, you can customize n and k in the puzzle below, and you could also personalize this puzzle by replacing [1, 2, 3, ..., n] with the letters of any n-letter word of your choice!
+(It could be your pet's name, your girlfriend's name, or your favorite food, for example.) The same rules still apply => you must execute some move sequences using the given knobs to revert the scrambled word back into the original word that you input.
+
+<h3>Try solving this puzzle in the least number of possible moves! (Scroll down to continue)</h3>
+
+</p>
+</div>
+
+<div id="puzzle-display" hidden>
+
 
     <div id="puzzle-main-content">
         <div id="number-moves-container">
@@ -80,7 +117,7 @@
         <input type="text" id="custom-label-input" name="custom-label" placeholder="FRUIT">
     </div>
     <div class="actions">
-        <button type="submit" class="btn" id="submit-button">Update preferences (Note: this will reset the current puzzle)!</button>
+        <button type="submit" class="btn" id="submit-button">Start New Game</button>
         <button type="reset" class="btn btn-ghost" id="reset-button">Clear form</button>
     </div>
 </form>

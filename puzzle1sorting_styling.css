@@ -17,6 +17,12 @@ body {
     gap: 30px;
 }
 
+#puzzle-introduction {
+    border: 3px dotted;
+    border-radius: 10px;
+    padding: 17px;
+}
+
 #puzzle-display {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
@@ -24,7 +30,7 @@ body {
     align-items: start;
     border: 3px dotted;
     border-radius: 10px;
-    padding: 12px;
+    padding: 25px;
 }
 
 /*#puzzle-main-content {
@@ -95,6 +101,10 @@ body {
     align-items: center;
     justify-content: center;
     height: 100%;
+}
+
+#page-title {
+    text-align: center;
 }
 
 #permutation-display {
@@ -215,6 +225,8 @@ body {
     animation: pulse 1.5s infinite;
 }
 
+
+
 @media (max-width: 768px) {
     body {
         padding: 10px;
@@ -247,6 +259,18 @@ body {
     }
 }
 
+#show-instructions {
+    padding: 10px 15px;
+    font-size: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-align: center;
+    margin: 5px 7.5px;
+}
+ 
 @media (max-width: 480px) {
     .knob {
         padding: 10px 15px;
@@ -260,4 +284,8 @@ body {
         padding: 10px 15px;
         font-size: 0.9rem;
     }
+}
+
+.hidden {
+    display: none !important;
 }

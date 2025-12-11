@@ -17,6 +17,9 @@ const submitButton = document.getElementById("submit-button");
 const resetButton = document.getElementById("reset-button");
 const scrambleButton = document.getElementById("scramble-button");
 
+const showInstructionsButton = document.getElementById("show-instructions");
+const puzzleIntroduction = document.getElementById("puzzle-introduction");
+const puzzleDisplayContainer = document.getElementById("puzzle-display");
 const knobs = document.getElementById("knobs");
 
 const undoButton = document.getElementById('undo-button');
@@ -426,7 +429,20 @@ function undoPreviousMove() {
     UpdateUI();
 }
 
+function showInstructions() {
+    if (puzzleIntroduction.classList.contains('hidden')) {
+        puzzleIntroduction.classList.remove('hidden');
+        showInstructionsButton.textContent = "Hide Instructions";
+    }
+    else {
+        puzzleIntroduction.classList.add('hidden');
+        showInstructionsButton.textContent = "Show Instructions";
+    }
+
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+    puzzleDisplayContainer.classList.add('hidden');
     renderPuzzle();
     //test the GPT AI
     //fetchGPT("Say hello world in a silly JSON format");
@@ -442,7 +458,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         n = parseInt(permLengthInput.value);
         k = parseInt(windowSizeInput.value);
         customLabel = customLabelInput.value;
-
+        const submitButton = document.getElementById("submit-button");
+        submitButton.textContent = "Update Preferences (NOTE: this will start a new game!)"
+        puzzleDisplayContainer.classList.remove('hidden');
+        puzzleIntroduction.classList.add('hidden');
+        showInstructionsButton.textContent = "Show Instructions";
         renderPuzzle();
         
     });
@@ -492,5 +512,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         
     });
+
+    showInstructionsButton.addEventListener("click", async() => {
+        showInstructions();
+
+    })
     
 })
