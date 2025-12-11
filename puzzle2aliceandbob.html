@@ -49,23 +49,36 @@ You can choose to either go first or second.
     </div>
     </div>
 
-    <div id="current-string-container">
-        <h2>Current String: </h2>
-        <div id="string-display"><h3><!-- JS injects into this DIV as well--></h3></div>
-        <div id="no-legal-moves-message" hidden>No more Legal Moves Remain!</div>
-        <div id="winner-message" hidden></div>
-        <div id="illegal-warning" hidden>Illegal Move (already has been reached)</div>
-    </div>
-
-    <div id="knob-container">
-    <div id="knobs" hidden>
-    <!--JS injects knobs to manipulate the string here (n total knobs)-->
-    </div>
-    </div>
+    
 
 </div>
 
+<div id="current-string-container">
+    <h2>Current String: </h2>
+    <div id="string-display"><h3><!-- JS injects into this DIV as well--></h3></div>
+    <div id="no-legal-moves-message" hidden>No more Legal Moves Remain!</div>
+    <div id="winner-message" hidden></div>
+    <div id="illegal-warning" hidden>Illegal Move (already has been reached)</div>
+</div>
 
+<div id="ai-move-container">
+    <h2 id="ai-or-human-move-label">AI's move: </h2>
+    <div id="ai-move-string-display"><!-- displays AI opponent's move in the format json{index: integer (an index i from 1 to n inclusive), increment: true/false} -->
+        Loading...
+        <!-- if it is your (human player's) move, change ai-or-human-move to "Your Turn!" and 
+         change "ai-move-string-display" to empty text-->
+    </div>
+</div>
+
+<div id="knob-container">
+<div id="knobs" hidden>
+<!--JS injects knobs to manipulate the string here (n total knobs)-->
+</div>
+</div>
+
+<div id="reset-game-container">
+    <button id="reset-game-button">Reset Game</button>
+</div>
 
 </div>
 
