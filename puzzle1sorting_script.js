@@ -48,6 +48,8 @@ const buttonEffectResetDelay = 500;
 const showSolutionForDelay = 3125;
 function renderPuzzle() {
     solvedMessage.hidden = true;
+    undoButton.disabled = false;
+    redoButton.disabled = false;
     completed = false;
     numberMoves.innerHTML = `<h4>0</h4>`
     knobs.hidden = false;
@@ -363,9 +365,18 @@ function rightShift(arr) {
 }
 
 function displayAiSolution() {
+    undoButton.disabled = true;
+    redoButton.disabled = true;
+
+
     aiSolutionContainer.hidden = false;
     const solutionText = formatSolution(aiSolution);
     aiSolutionTextDisplay.innerHTML = solutionText;
+
+    const knobs = document.querySelectorAll('.knob');
+    knobs.forEach(knob => {
+        knob.disabled = true;
+    });
 
     UpdateUI();
 
