@@ -50,6 +50,10 @@
     animation: pulse 0.7s infinite;
 }
 
+#page-title {
+    text-align: center;
+}
+
 #no-legal-moves-message {
     background-color: #fbed9b;
     color: grey;
