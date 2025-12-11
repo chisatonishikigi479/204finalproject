@@ -1,0 +1,35 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(125deg, #b6cff4 0%, #8bb5f9 100%);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 30px;
+}
+
+#page-title, #page-description, #puzzle-catalogue-title, .puzzle-entry-title {
+    text-align: center;
+}
+
+.puzzle-entry {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.puzzle-entry button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-align: center;
+    margin: 10px 7.5px;
+}
