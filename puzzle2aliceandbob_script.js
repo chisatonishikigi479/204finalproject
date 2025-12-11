@@ -63,7 +63,7 @@ function renderPuzzle() {
 }
 
 function updateStringDisplay() {
-    stringDisplay.innerHTML = `<h3>${currentString.join(' ')}</h3>`;
+    stringDisplay.innerHTML = `<h2>${currentString.join(' ')}</h2>`;
 }
 
 function updateTurnDisplay() {
@@ -76,7 +76,7 @@ function updateTurnDisplay() {
         aiMoveStringDisplay.textContent = "AI is thinking...";
         disableAllKnobs();
     }
-    numberMoves.textContent = `${moveHistory.length}`;
+    numberMoves.textContent = `<h2>${moveHistory.length}</h2>`;
 
 
 }
