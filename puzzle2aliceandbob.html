@@ -38,20 +38,23 @@ You can choose to either go first or second.
 </div>
 
 <div id="puzzle-display" hidden>
-<div id="move-history-container">
-    <div id="number-moves-container">
-    <h4>Number of moves so far: 
-    <div id="number-moves">0</div>
-    </h4>
-    </div>
-    <div id="move-history-list-container">
-    <h4>Move history:</h4>
-    <div id="move-history-list"><!-- JS injects into this DIV -->
-    </div>
-    </div>
+<div id="move-history-list-container">
+<h4>Move history:</h4>
+<div id="move-history-list"><!-- JS injects into this DIV -->
+</div>
+</div>
+
+<div id="number-moves-container">
+<h4>Number of moves so far: 
+<div id="number-moves">0</div>
+</h4>
+</div>
 
     
 
+
+<div id="reset-game-container">
+    <button id="reset-game-button">Reset Game</button>
 </div>
 
 <div id="current-string-container">
@@ -60,6 +63,13 @@ You can choose to either go first or second.
     <div id="no-legal-moves-message" hidden>No more Legal Moves Remain!</div>
     <div id="winner-message" hidden></div>
     <div id="illegal-warning" hidden>Illegal Move (already has been reached)</div>
+</div>
+
+
+<div id="knob-container">
+<div id="knobs" hidden>
+<!--JS injects knobs to manipulate the string here (n total knobs)-->
+</div>
 </div>
 
 <div id="ai-move-container">
@@ -71,15 +81,8 @@ You can choose to either go first or second.
     </div>
 </div>
 
-<div id="knob-container">
-<div id="knobs" hidden>
-<!--JS injects knobs to manipulate the string here (n total knobs)-->
-</div>
-</div>
 
-<div id="reset-game-container">
-    <button id="reset-game-button">Reset Game</button>
-</div>
+
 
 </div>
 
