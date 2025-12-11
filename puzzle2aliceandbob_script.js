@@ -6,6 +6,7 @@ let n = 4;
 let k = 3;
 let currentString = []; //array of length n, each element from 0 to k-1 inclusive
 
+const backButton = document.getElementById("back-button");
 const showInstructionsButton = document.getElementById("show-instructions");
 const puzzleIntroduction = document.getElementById("puzzle-introduction");
 const puzzleDisplayContainer = document.getElementById("puzzle-display");
@@ -432,9 +433,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderPuzzle();
 });
 
+
     showInstructionsButton.addEventListener("click", async() => {
         showInstructions();
 
     })
+
+    backButton.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
     
 })

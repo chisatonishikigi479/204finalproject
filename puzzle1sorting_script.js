@@ -9,6 +9,9 @@ let moveHistory = []; //stack of past moves
 let redoStack = []; //stack for redo button
 let isUndoRedoAction = false; //so we don't infinitely add more history during undo/redo
 
+const backButton = document.getElementById("back-button");
+
+
 const customLabelInput = document.getElementById("custom-label-input");
 const windowSizeInput = document.getElementById("window-size-input");
 const permLengthInput = document.getElementById("perm-length-input");
@@ -516,6 +519,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     showInstructionsButton.addEventListener("click", async() => {
         showInstructions();
 
-    })
+    });
+
+    backButton.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
     
 })
