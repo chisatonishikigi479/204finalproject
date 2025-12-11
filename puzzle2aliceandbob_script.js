@@ -1,10 +1,12 @@
-const moveHistory = []; //array of arrays
-const hasLegalMovesRemaining = true;
-const usersTurn = false; //true if it is the user's turn, false if it's the AI's turn
-const userGoesFirst = false;
-const n = 4;
-const k = 3;
-const currentString = []; //array of length n, each element from 0 to k-1 inclusive
+let moveHistory = []; //array of arrays
+let hasLegalMovesRemaining = true;
+let usersTurn = false; //true if it is the user's turn, false if it's the AI's turn
+let userGoesFirst = false;
+let n = 4;
+let k = 3;
+let currentString = []; //array of length n, each element from 0 to k-1 inclusive
+let seenStates = new Set();
+
 const showInstructionsButton = document.getElementById("show-instructions");
 const puzzleIntroduction = document.getElementById("puzzle-introduction");
 const puzzleDisplayContainer = document.getElementById("puzzle-display");
@@ -33,6 +35,12 @@ function renderPuzzle() {
     usersTurn = userGoesFirst;
     moveHistoryList.innerHTML = '';
     currentString = Array(n).fill(0);
+
+    moveHistoryList.innerHTML = '';
+    noLegalMovesMessage.hidden = true;
+    winnerMessage.hidden = true;
+    illegalWarning.hidden = true;
+    knobs.hidden = false;
     
 
 
