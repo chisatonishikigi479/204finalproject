@@ -15,14 +15,89 @@
 <div id="puzzle-introduction">
 
 <p>
-At the start of the game, you are given a base 3 string with <b>n</b> digits: 0000...000 <b>n 0's</b> 
-<br> At any state of the game, given that the string is currently (a_1, a_2, ..., a_n), you can pick an index
-<b>i</b> in the range <b>1 &lt; i &lt; n</b> inclusive
+At the start of the game, you are given a base <b>k</b> string with <b>n</b> digits: 0000...000 <b>n 0's</b> 
+<br> At any state of the game, given that the string is currently <b>a_1 a_2 ... a_n</b> at your turn, you can pick a <b>single</b> index
+<b>i</b> in the range <b>1 &lt; i &lt; n</b> inclusive, and:
+<ul>
+<li> If <b>0 &lt; i &lt; k-1: </b> either increment a_i by 1 or decrement a_i by 1.</li>
+<li> If <b>i = 0: </b> increment a_i by 1</li>
+<li> If <b>i = k-1: </b> decrement a_i by 1</li>
+
+</ul>
+Also, a move to any string <b>a_1 a_2 ... a_n</b> is only legal if at any point in the history of the game, 
+<b>a_1 a_2 ... a_n</b> has <b>not</b> been reached by <b>either player</b> before the current turn.
+<br>You will be taking turns against an AI agent in modifying the string <b>a_1 a_2 ... a_n</b>.
+<br><b>The player who is the first to run out of legal moves loses, while the other player wins.</b>
+
+You can choose to either go first or second. 
+
+<h3>(Scroll down to continue)</h3>
 
 </p>
 </div>
 
+<div id="puzzle-display" hidden>
+<div id="move-history-container">
+    <div id="number-moves-container">
+    <h4>Number of moves so far: 
+    <div id="number-moves">0</div>
+    </h4>
+    </div>
+    <div id="move-history-list-container">
+    <h4>Move history:</h4>
+    <div id="move-history-list"><!-- JS injects into this DIV -->
+    </div>
+    </div>
 
+    <div id="current-string-container">
+        <h2>Current String: </h2>
+        <div id="string-display"><h3><!-- JS injects into this DIV as well--></h3></div>
+        <div id="no-legal-moves-message" hidden>No more Legal Moves Remain!</div>
+        <div id="winner-message" hidden></div>
+    </div>
+
+    <div id="knob-container">
+    <div id="knobs" hidden>
+    <!--JS injects knobs to manipulate the string here (n total knobs)-->
+    </div>
+    </div>
+
+</div>
+
+
+
+</div>
+
+<div id="customization-container">
+<form id="customization">
+    <h2>Customize Your Puzzle: </h2>
+    <div class="customization-input">
+        <label for="n">Choose number of dimensions (n): </label>
+            <input type="number" id="num-dimensions-input" name="n" placeholder="4" min="2" max="8" required>
+    </div>
+    <div class="customization-input">
+        <label for="k">Choose hypercube length (k): </label>
+            <input type="number" id="hypercube-length-input" name="k" placeholder="3" min="2" max="8" required>
+    </div>
+    <div class="customization-input">
+        <label>Choose when to play:</label>
+        <div class="radio-group">
+            <label class="radio-option">
+                <input type="radio" id="go-first" name="turn-order" value="first" checked>
+                <span>Go First</span>
+            </label>
+            <label class="radio-option">
+                <input type="radio" id="go-second" name="turn-order" value="second">
+                <span>Go Second</span>
+            </label>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="submit" class="btn" id="submit-button">Start New Game</button>
+        <button type="reset" class="btn btn-ghost" id="reset-button">Clear form</button>
+    </div>
+</form>
+</div>
 
 
 <script src="puzzle2aliceandbob_script.js" defer></script>
