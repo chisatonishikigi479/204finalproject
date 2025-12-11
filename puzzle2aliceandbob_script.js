@@ -20,6 +20,7 @@ const winnerMessage = document.getElementById("winner-message");
 const illegalWarning = document.getElementById("illegal-warning");
 const resetGameButton = document.getElementById("reset-game-button");
 const clearFormButton = document.getElementById("reset-button");
+const numberMoves = document.getElementById("number-moves");
 
 const aiOrHumanMoveLabel = document.getElementById("ai-or-human-move-label");
 const aiMoveStringDisplay = document.getElementById("ai-move-string-display");
@@ -64,6 +65,22 @@ function updateStringDisplay() {
     stringDisplay.innerHTML = `<h3>${currentString.join(' ')}</h3>`;
 }
 
+function updateTurnDisplay() {
+    if (usersTurn) {
+        aiOrHumanMoveLabel.textContent = "Your Turn!";
+        aiMoveStringDisplay.textContent = "Make your move using the controls above!";
+        enableAllKnobs();
+    } else {
+        aiOrHumanMoveLabel.textContent = "AI's Turn!";
+        aiMoveStringDisplay.textContent = "AI is thinking...";
+        disableAllKnobs();
+    }
+    numberMoves.textContent = `${moveHistory.length}`;
+
+
+}
+
+
 function generateKnobs() {
 
     const indicesArr = [];
@@ -73,10 +90,10 @@ function generateKnobs() {
 
     knobs.innerHTML = indicesArr.map((index) => {
         let finalStructure = `<div class="knob-set">
-            <button class="knob" class="decrement" id="knob-${index}-decrement" ${currentString[i-1] <= 0 ? 'disabled' : ''}>
+            <button class="knob" class="decrement" id="knob-${index}-decrement" ${currentString[index-1] <= 0 ? 'disabled' : ''}>
                 -1 to digit ${index}
             </button>
-            <button class="knob" class="increment" id="knob-${index}-increment" ${currentString[i-1] >= k - 1 ? 'disabled' : ''}>
+            <button class="knob" class="increment" id="knob-${index}-increment" ${currentString[index-1] >= k - 1 ? 'disabled' : ''}>
                 +1 to digit ${index}
             </button>
         </div>
@@ -100,6 +117,81 @@ function generateKnobs() {
     }
     
 
+}
+
+function isLegalMove(index, increment) {
+    const newString = structuredClone(currentString);
+     if (increment) {
+        if (newString[index-1] >= k - 1) {
+            return false;
+        }
+        newString[index-1]++;
+    } else {
+        if (newString[index-1] <= 0) {
+            return false;
+        }
+        newString[index-1]--;
+    }
+    return !hasStateBeenSeen(newString);
+}
+
+function applyKnob(index, increment) {
+    if (!usersTurn) {
+        return;
+    }
+    
+    if (!isLegalMove(index, increment)) {
+        illegalWarning.hidden = false;
+        setTimeout(() => {
+            illegalWarning.hidden = true;
+        }, 2000);
+        return;
+    }
+    
+    if (increment) {
+        currentString[index-1]++;
+    } 
+    else {
+        currentString[index-1]--;
+    }
+    
+    moveHistory.push(structuredClone(currentString));
+    
+    updateStringDisplay();
+    updateMoveHistoryDisplay();
+    generateKnobs();
+    
+    if (!hasLegalMoves()) {
+        endGame('human');
+        return;
+    }
+    
+    usersTurn = false;
+    updateTurnDisplay();
+    
+    setTimeout(() => {
+        makeAIMove();
+    }, 1000);
+}
+
+function updateMoveHistoryDisplay() {
+    moveHistoryList.innerHTML = moveHistory.map((state, i) => {
+        const player = (i % 2 === 0) 
+            ? (userGoesFirst ? 'Human' : 'AI')
+            : (userGoesFirst ? 'AI' : 'Human');
+        return `<div class="move-entry">
+            Move ${i + 1} (${player}): [${state.join(', ')}]
+        </div>`;
+    }).join('');
+}
+
+function hasLegalMoves() {
+    for (let i = 1; i <= n; i++) {
+        if (isLegalMove(i, true) || isLegalMove(i, false)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function disableAllKnobs() {
@@ -160,6 +252,97 @@ function showInstructions() {
         puzzleIntroduction.classList.add('hidden');
         showInstructionsButton.textContent = "Show Instructions";
     }
+}
+
+async function makeAIMove() {
+    aiMoveStringDisplay.textContent = "AI is thinking...";
+    disableAllKnobs();
+    try {
+        const prompt = getAIPrompt();
+        const response = await fetchGPT(prompt);
+        const aiMove = JSON.parse(response);
+        const index = aiMove.index; 
+        const increment = aiMove.increment;
+        
+        if (!isLegalMove(index, increment)) {
+            console.error("AI made illegal move");
+            makeRandomLegalMove();
+            return;
+        }
+        
+        if (increment) {
+            currentString[index-1]++;
+        } else {
+            currentString[index-1]--;
+        }
+        
+        moveHistory.push(structuredClone(currentString));
+        updateStringDisplay();
+        updateMoveHistoryDisplay();
+        generateKnobs();
+        const action = increment ? '+1' : '-1';
+        aiMoveStringDisplay.textContent = `AI chose: ${action} to digit ${index} => [${currentString.join(', ')}]`;
+        
+        console.log(aiMove);
+        if (!hasLegalMoves()) {
+            endGame('AI');
+            return;
+        }
+        usersTurn = true;
+        updateTurnDisplay();
+        
+    } catch (error) {
+        console.error("AI error:", error);
+        makeRandomLegalMove();
+    }
+}
+
+function makeRandomLegalMove() {
+    disableAllKnobs();
+    const legalMoves = [];
+    for (let i = 1; i <= n; i++) {
+        if (isLegalMove(i, true)) {
+            legalMoves.push({index: i, increment: true});
+        }
+        if (isLegalMove(i, false)) {
+            legalMoves.push({index: i, increment: false});
+        }
+    }
+    
+    if (legalMoves.length === 0) {
+        endGame('human');
+        return;
+    }
+    
+    const randomMove = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+    if (randomMove.increment) {
+        currentString[randomMove.index - 1]++;
+    } 
+    else {
+        currentString[randomMove.index - 1]--;
+    }
+    
+    moveHistory.push(structuredClone(currentString));
+    updateStringDisplay();
+    updateMoveHistoryDisplay();
+    generateKnobs();
+    const action = randomMove.increment ? '+1' : '-1';
+    aiMoveStringDisplay.textContent = `AI chose: ${action} to digit ${randomMove.index} => [${currentString.join(', ')}]`;
+    
+    if (!hasLegalMoves()) {
+        endGame('AI');
+        return;
+    }
+    usersTurn = true;
+    updateTurnDisplay();
+}
+
+function endGame(winner) {
+    hasLegalMovesRemaining = false;
+    noLegalMovesMessage.hidden = false;
+    winnerMessage.hidden = false;
+    winnerMessage.innerHTML = `<h2>${winner} wins!</h2>`;
+    disableAllKnobs();
 }
 
 function getAIPrompt() {
@@ -238,6 +421,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const submitButton = document.getElementById("submit-button");
         submitButton.textContent = "Update Preferences (NOTE: this will start a new game!)"
         puzzleDisplayContainer.classList.remove('hidden');
+        puzzleDisplayContainer.hidden = false;
         puzzleIntroduction.classList.add('hidden');
         showInstructionsButton.textContent = "Show Instructions";
         renderPuzzle();
