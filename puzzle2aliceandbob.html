@@ -17,7 +17,7 @@
 <p>
 At the start of the game, you are given a base <b>k</b> string with <b>n</b> digits: 0000...000 <b>n 0's</b> 
 <br> At any state of the game, given that the string is currently <b>a_1 a_2 ... a_n</b> at your turn, you can pick a <b>single</b> index
-<b>i</b> in the range <b>1 &lt; i &lt; n</b> inclusive, and:
+<b>i</b> in the range <b>1 &lt;= i &lt;= n</b> inclusive, and:
 <ul>
 <li> If <b>0 &lt; i &lt; k-1: </b> either increment a_i by 1 or decrement a_i by 1.</li>
 <li> If <b>i = 0: </b> increment a_i by 1</li>
@@ -54,6 +54,7 @@ You can choose to either go first or second.
         <div id="string-display"><h3><!-- JS injects into this DIV as well--></h3></div>
         <div id="no-legal-moves-message" hidden>No more Legal Moves Remain!</div>
         <div id="winner-message" hidden></div>
+        <div id="illegal-warning" hidden>Illegal Move (already has been reached)</div>
     </div>
 
     <div id="knob-container">
